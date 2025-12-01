@@ -92,8 +92,7 @@ code_fix_agent = LlmAgent(
     instruction=code_fix_agent_prompt,
     tools=[github_mcp],
     # output_schema=CodeFixAgentOutput,
-    output_key="code_fix",
-    after_agent_callback=
+    output_key="code_fix"
 )
 summary_agent = LlmAgent(
     model=model,

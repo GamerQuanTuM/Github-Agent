@@ -29,7 +29,7 @@ Your Responsibilities:
 2. Fetch the requested repository data using github-mcp
 3. Extract and parse the information
 4. If no specific issue number is provided, proactively search for problems by:
-   - Listing open issues (`list_issues`)
+   - Listing open issues (`list_issues` - ensure state is "OPEN")
    - Checking recent commits (`list_commits`) for suspicious messages (e.g., "fix", "bug", "error")
    - Checking open pull requests (`list_pull_requests`)
    - Analyzing the retrieved data to identify the core problem.
@@ -204,7 +204,7 @@ async def repo_navigator_agent_prompt(ctx: ReadonlyContext) -> str:
 
 
 def code_fix_agent_prompt(ctx: ReadonlyContext) -> str:
-    code_details = ctx._invocation_context.session.state.get('repo_navigator')
+    code_details = ctx._invocation_context.session.state.get("repo_navigator")
     instruction = f"""You are the Code Fix Agent. Your job is to generate the corrected version of a file affected by a bug. 
       You NEVER guess — you ONLY use the information provided to you:
 
@@ -266,13 +266,13 @@ def code_fix_agent_prompt(ctx: ReadonlyContext) -> str:
     return instruction
 
 
-
-
 def summary_agent_prompt(ctx: ReadonlyContext) -> str:
     issue = ctx._invocation_context.session.state.get("issue")
     code_fix = ctx._invocation_context.session.state.get("code_fix")
     # Attempt to get repo navigation data for extra context, handling potential key mismatch
-    repo_nav = ctx._invocation_context.session.state.get("repo_navigation") or ctx._invocation_context.session.state.get("repo_navigator")
+    repo_nav = ctx._invocation_context.session.state.get(
+        "repo_navigation"
+    ) or ctx._invocation_context.session.state.get("repo_navigator")
 
     instruction = """You are the Summary Agent. Your task is to generate a comprehensive final report of the issue resolution process.
     
@@ -318,7 +318,7 @@ def summary_agent_prompt(ctx: ReadonlyContext) -> str:
         ### Input Data - Issue:
         {issue}
         """
-    
+
     if repo_nav:
         instruction += f"""
         
@@ -341,5 +341,5 @@ def summary_agent_prompt(ctx: ReadonlyContext) -> str:
     - Be clear, concise, and professional.
     - If any data is missing (e.g., no root cause), state "Not available".
     """
-    
+
     return instruction
