@@ -96,7 +96,6 @@ We use **Gemini 2.5 Flash Lite** as the brain. Its large context window allows u
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/GamerQuanTuM/Github-Agent
-    cd capstone
     ```
 
 2.  **Install dependencies:**
